@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOP Hibalista - Részletes & Tagolt</title>
+    <title>Hibalista</title>
     <style>
         :root {
             --primary-color: #0056b3;
@@ -265,9 +265,9 @@
         <p class="subtitle">Minden szabványszöveg és magyar leírás részletesen</p>
 
         <div class="action-bar">
-            <button class="btn-save" onclick="downloadState()">💾 Mentés Fájlba</button>
-            <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Betöltés</button>
-            <button class="btn-reset" onclick="resetAll()">🗑️ Reset</button>
+            <button class="btn-save" onclick="downloadState()">Mentés</button>
+            <button class="btn-load" onclick="document.getElementById('fileInput').click()">Betöltés</button>
+            <button class="btn-reset" onclick="resetAll()">Reset</button>
             <input type="file" id="fileInput" style="display: none;" onchange="loadFromFile(this)">
         </div>
     </header>
@@ -899,3 +899,4 @@
 
 </body>
 </html>
+
