@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOP Hibalista - Teljes Magyar Leírás</title>
+    <title>LOP Hibalista - Részletes & Tagolt</title>
     <style>
         :root {
             --primary-color: #0056b3;
@@ -178,9 +178,14 @@
 
         .problem-text {
             font-size: 1em;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #333;
-            white-space: pre-wrap; /* Hogy a sortörések megmaradjanak */
+        }
+        
+        /* Kiemelések a szövegben */
+        .problem-text b {
+            color: #000;
+            font-weight: 700;
         }
 
         .checkbox-area {
@@ -256,8 +261,8 @@
 
 <div class="container">
     <header>
-        <h1>LOP Hibalista - Teljes</h1>
-        <p class="subtitle">Automatikus mentés aktív | Részletes magyar leírások</p>
+        <h1>LOP Hibalista - Részletes</h1>
+        <p class="subtitle">Minden szabványszöveg és magyar leírás részletesen</p>
 
         <div class="action-bar">
             <button class="btn-save" onclick="downloadState()">💾 Mentés Fájlba</button>
@@ -282,7 +287,7 @@
         </div>
     </div>
 
-    <input type="text" id="searchInput" class="search-box" placeholder="Keresés: ID, Helyszín vagy szövegrészlet...">
+    <input type="text" id="searchInput" class="search-box" placeholder="Keresés: ID, Helyszín vagy szöveg...">
 
     <div id="listContainer" class="list-container">
         </div>
@@ -291,96 +296,448 @@
 <div id="toast">Mentve!</div>
 
 <script>
-    // AZ ADATOK - TELJES MAGYAR LEÍRÁSSAL
+    // ADATOK - TELJES RÉSZLETESSÉGGEL ÉS TAGOLÁSSAL
     const initialData = [
-        {id: 662, loc: "UB35", desc: "A kapcsolási rajz szerint nincs pontos karakterisztika megadva némelyik résztvevő Locc boxához. (Nem ismert, mely résztvevők azok >> COMAN-ba rögzítés előtt javasolt a pont L2,5-L3 ellenőrzése.)"},
-        {id: 663, loc: "UB35", desc: "Az értékek jók, viszont az UB35 660VR001 NC lokátor Locc Boxának 002-es moduljának nincs nyomógombja. Még mindig nincs nyomógombja."},
-        {id: 711, loc: "HC35", desc: "005LE_001-MA1 fékellenállása nem jól van felszerelve. (Vízszintesen áll pedig függőlegesen kellene neki). A csatlakozás árnyékolt Lenze rendszerkábellel lett kivitelezve?"},
-        {id: 712, loc: "HC35", desc: "010DT_009-MA1 geber kábel árnyékolásáról hiányzik a réz szalag, illetve még a gyári műanyag fólia sincs leválasztva."},
-        {id: 713, loc: "HC35", desc: "10DT009-nél 20m-es motorkábel van, viszont nincsen hálózati szűrő a frekvenciaváltón."},
-        {id: 714, loc: "HC35", desc: "401-es fő késes biztosítékok (QB1) a dokumentáció szerint 315A-nak kellene lennie, de a valóságban 200A-os biztosítékok vannak bent.\nValamint az összes NC lokátor caparoc-ja 8A-re van beállítva és 10A-re kellene."},
-        {id: 715, loc: "HC35", desc: "8A-re van állítva (Locc Box)."},
-        {id: 716, loc: "HC35", desc: "Nem megfelelő értékek vannak felvéve (offset helyett abszolút pozícióérték)."},
-        {id: 717, loc: "HC36", desc: "NC lokátor főkapcsoló utáni burkolat hiánya!"},
-        {id: 718, loc: "HC36", desc: "Legelső biztosíték nem egyezik az előírttal. (Szelektivitás rendben van?)"},
-        {id: 719, loc: "HC36", desc: "Nem megfelelő, a 402 üres. (Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?)"},
-        {id: 720, loc: "HC36", desc: "8A-re van állítva (Locc Box)."},
-        {id: 721, loc: "HC36", desc: "Abszolút pozíció értékek vannak felvéve."},
-        {id: 722, loc: "HC36", desc: "Nem átlátható. Topológia a TIA-ban nem standard, nincs keresztezés a PN vonalon."},
-        {id: 723, loc: "HC37", desc: "H101 szekrény: Szikszalag az optikai csatlakozóknál."},
-        {id: 724, loc: "HC37", desc: "Nem megfelelő biztosíték/megszakító áramértékek."},
-        {id: 725, loc: "HC37", desc: "10A van állítva. (Szúrópróbaszerű ellenőrzés: kapcsolási állás 10/5, 10A és tehetetlenség 3)."},
-        {id: 726, loc: "HC37", desc: "8A-ra van állítva."},
-        {id: 727, loc: "HC38", desc: "Nem egyeznek az online és offline adatok 010DT-nél."},
-        {id: 728, loc: "HC38", desc: "Többnél nem stimmel. 401 nem stimmel. 402 üres. (Biztosítékok nem egyeznek az EPLAN-nal)."},
-        {id: 729, loc: "HC38", desc: "Nincs offset érték felvéve."},
-        {id: 730, loc: "HC38", desc: "Nem átlátható. Topológia a TIA-ban NIO. Nincs keresztezés a PN vonalon. Kérjük a PRL betartását!"},
-        {id: 731, loc: "HC39", desc: "001KH_001 online és offline adatok nem egyeznek."},
-        {id: 732, loc: "HC39", desc: "401 nem egyezik, 402 üres, 403 NIO. (Biztosítékok nem egyeznek az EPLAN-nal)."},
-        {id: 733, loc: "HC39", desc: "Nem átlátható. Topológia a TIA-ban NIO, nincs keresztezés a PN vonalon."},
-        {id: 734, loc: "UG36", desc: "010BR_001 nincsen sehol sem feltüntetve."},
-        {id: 804, loc: "VB35", desc: "NC lokátor betáp után nincs védőburkolat."},
-        {id: 805, loc: "VB35", desc: "080sgm009 nincs vakdugó."},
-        {id: 806, loc: "VB35", desc: "Nem egyezik egyik szekrényben sem. (Biztosítékok és megszakítók áramértéke)."},
-        {id: 807, loc: "VB35", desc: "8A van állítva."},
-        {id: 808, loc: "VB35", desc: "Nem elérhetőek az offset értékek."},
-        {id: 809, loc: "VB36", desc: "Nem megfelelő. 402-esben nincs biztosíték. Dokumentum alapján 3.15A-snak kell benne lennie."},
-        {id: 810, loc: "VB36", desc: "Nem megfelelő. 402-esben nincs biztosíték. Dokumentum alapján 3.15A-snak kell benne lennie. (Duplikált tétel a listában)."},
-        {id: 811, loc: "VB36", desc: "8A van állítva."},
-        {id: 812, loc: "VB36", desc: "8A van állítva."},
-        {id: 813, loc: "VB37", desc: "H011-ben vannak eltérések a feltüntetett és a valódi áramértékek között.\nA motorvédő kapcsolóknak nincs feltüntetett értéke amivel össze tudnánk hasonlítani.\nH112 caparoc-oknál nincs feltüntetve az áramérték, nem tudtuk ellenőrizni.\n001KL101 mind 8 amperra van állítva, de rajz szerint másra kellene állítva lennie.\nH001-ben a 618, 619, 620 biztosítók nincsenek a kapcsolási rajzban feltüntetve."},
-        {id: 814, loc: "VB37", desc: "H211 caparoc áramértékek nincsenek feltüntetve a kapcsolási rajzban, nem tudtuk ellenőrizni (E-planban nincs érték)."},
-        {id: 815, loc: "QS35", desc: "Hajtás szekrényeken nincs túlfolyó tartály."},
-        {id: 816, loc: "QS35", desc: "501-510 szigetelő szalaggal van tervjelezve.\n000ee_001 h001 nincs feljelölve."},
-        {id: 817, loc: "QS35", desc: "QB1 értéke nem szerepel a darablistában. Eplanban 400A van feltüntetve, 160A van bennük."},
-        {id: 818, loc: "QS35", desc: "Több eltérés. (Nagyon sok beállított áramérték nem egyezik a kapcsolási rajzzal)."},
-        {id: 819, loc: "UG35", desc: "Nem egyeznek (Paraméterkészletek / projektadatok)."},
-        {id: 820, loc: "UG35", desc: "Több eltérés. (Több biztosíték nem egyezik a kapcsolási rajzzal)."},
-        {id: 821, loc: "UG35", desc: "Csak 5A van használva, konfig eltér az előírttól."},
-        {id: 822, loc: "UG35", desc: "Nincs synchro (adatmentés)."},
-        {id: 823, loc: "UG35", desc: "Nem átlátható. Topológia NIO, nem a PRL szerint készült."},
-        {id: 824, loc: "UG35", desc: "Nem megfelelő értékek (Locc Box)."},
-        {id: 825, loc: "UG35", desc: "Nem érhető el sem a syncro se a gateway konfiguráció."},
-        {id: 826, loc: "UB32", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni! (Papírmentes doku, Mobsy, Profienergy, stb)."},
-        {id: 827, loc: "UB33", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
-        {id: 828, loc: "UB34", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
-        {id: 829, loc: "UB35", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
-        {id: 830, loc: "UG35", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
-        {id: 831, loc: "UG36", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
-        {id: 832, loc: "QS35", desc: "Kérlek a túl sok zavart és figyelmeztetést (lásd Top Störungen) az SPS programban ellenőrizni és javítani!"},
-        {id: 1046, loc: "HC35", desc: "Kein Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1047, loc: "HC35", desc: "Eplan kézírással van kiegészítve! NIO.\nNincs Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1048, loc: "HC35", desc: "Nincs Label az Externe Spannung-hoz (Mitarbeiter Ventilátor).\nNincs Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1049, loc: "HC36", desc: "Nincs Label az Externe Spannung-hoz (Mitarbeiter Ventilátor).\nNincs Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1050, loc: "HC37", desc: "Nem minden irányba mozgatható. (Kamera, X-Y-Z)."},
-        {id: 1051, loc: "HC37", desc: "Nem minden irányba mozgatható. (Kamera)."},
-        {id: 1052, loc: "HC38", desc: "60dgc109 előtti védőlemez a spanneren hiányzik."},
-        {id: 1053, loc: "HC39", desc: "Nem minden irányba mozgatható! NIO."},
-        {id: 1054, loc: "VB35", desc: "Igen, de papírra van nyomtatva. (Veszélyes feszültséget jelző figyelmeztetőtábla)."},
-        {id: 1055, loc: "VB35", desc: "Az optikai kábel nem jól van elvezetve."},
-        {id: 1056, loc: "HC38", desc: "Nem minden irányba mozgatható! NIO."},
-        {id: 1057, loc: "HC38", desc: "Nincs Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1058, loc: "VB35", desc: "Nincs, hiányos. (Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt)."},
-        {id: 1059, loc: "VB35", desc: "EPLAN hiányzik!!! Nincs benne. (Tartalmazza-e a letelepített NC-locatorokat?)"},
-        {id: 1060, loc: "VB36", desc: "80RB100 Schlauchpacket NIO. Nem megfelelő Schlauchpacket van használva a roboton."},
-        {id: 1061, loc: "VB36", desc: "Kabel NIO, lásd kép!!!\n080WZA209 mellett ki vagy beépítés alatt áll a 080DGC209. Nem megfelelő kábelelrendezés."},
-        {id: 1062, loc: "VB36", desc: "002BR_020: A KP32 plusz nyomógomb világít."},
-        {id: 1063, loc: "VB36", desc: "50GST009-nél nem megfelelő, valamint látszódik a csatlakozón az emiatti elhasználódás is."},
-        {id: 1064, loc: "VB37", desc: "Fent van, de papír. (Veszélyes feszültséget jelző tábla)."},
-        {id: 1065, loc: "VB37", desc: "EPLAN hiányzik!!! Nincs benne."},
-        {id: 1066, loc: "VB37", desc: "Az optikai kábel nem jól van elvezetve."},
-        {id: 1067, loc: "VB37", desc: "(Üres/Duplikált bejegyzés - GBO Template)."},
-        {id: 1068, loc: "VB37", desc: "Kein Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1069, loc: "VB37", desc: "Nincs, hiányos. (Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt)."},
-        {id: 1070, loc: "VB37", desc: "Nincs benne (EPLAN)."},
-        {id: 1071, loc: "UG35", desc: "Nincsen. (Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt címke)."},
-        {id: 1072, loc: "UG35", desc: "Nincsen. (A fő betáp szekrény címkéje rögzítve van? +H011)."},
-        {id: 1073, loc: "UG35", desc: "Z tengely fix, 150dgc egy spanneren van."},
-        {id: 1074, loc: "UG35", desc: "150dgc spanneren van. (Rezgésekre érzéketlen?)"},
-        {id: 1075, loc: "QS35", desc: "Nem minden irányba mozgatható! NIO."},
-        {id: 1076, loc: "QS35", desc: "Nincs Keba Panel! Stecker Deckel hiányzik!"},
-        {id: 1077, loc: "UG35", desc: "150dgc spanneren van NIO. (Kamera külső erőbehatások ellen védett?)"},
-        {id: 1078, loc: "UG35", desc: "150dgc nem megfelelő. (A Band3 25-ös fejezetben lévő leírás alapján lett kiépítve?)"}
+        {
+            id: 662, 
+            loc: "UB35", 
+            desc: "A kapcsolási rajz szerint nincs pontos karakterisztika megadva némelyik résztvevő Locc Boxához.<br>(nem ismert, mely résztvevők azok >> COMAN-ba rögzítés előtt javasolt a pont L2,5-L3 ellenőrzése.)<br><br><b>E02.27</b> - Az olvadóbiztosítók és védőkapcsolók névleges árama és karakterisztikája kapcsolási rajz szerinti?"
+        },
+        {
+            id: 663, 
+            loc: "UB35", 
+            desc: "Az értékek jók viszont az UB35 660VR001 NC lokátor locc Boxának 002-es moduljának nincs nyomógombja. Még mindig nincs nyomógombja.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 711, 
+            loc: "HC35", 
+            desc: "005LE_001-MA1 fékellenállása nem jól van felszerelve.<br>(Vízszintesen áll pedig függőlegesen kellene neki).<br><br><b>E47.17</b> - A decentrális FU-k esetében a fékellenállás a PRL alapján lett felszerelve. A csatlakozás árnyékolt Lenze rendszerkábellel lett kivitelezve."
+        },
+        {
+            id: 712, 
+            loc: "HC35", 
+            desc: "010DT_009-MA1 geber kábel árnyékolásáról hiányzik a réz szalag, illetve még a gyári műanyag fólia sincs leválasztva.<br><br><b>E47.18</b> - Az árnyékolt jelkábelek, mint pl. 'Geberleitung' stb. a frekvenciaváltón nagy felületen vannak földelve."
+        },
+        {
+            id: 713, 
+            loc: "HC35", 
+            desc: "10DT009-nél 20m-es motorkábel van viszont nincsen hálózati szűrő a frekvenciaváltón.<br><br><b>E47.23</b> - 10 méter feletti motorkábel esetén egy hálózati szűrő van beszerelve, és hosszabb kábel esetén a PRL előírásai szerint egy szinusz szűrő (kimeneti szűrő)?"
+        },
+        {
+            id: 714, 
+            loc: "HC35", 
+            desc: "401-es fő késes biztosítékok (QB1) a dokumentáció szerint 315A-nak kellene lennie de a valóságban 200A-os biztosítéskok vannak bent.<br><br>Valamint az összes NC lokátor caparoc-ja 8A-re van beállítva és 10A-re kellene.<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 715, 
+            loc: "HC35", 
+            desc: "8A-re van állítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 716, 
+            loc: "HC35", 
+            desc: "Nem megfelelő értékek vannak felvéve (offset helyett abszolút pozícióérték).<br><br><b>E10.08</b> - Hálózaton keresztül elérhető adatmentés PLC Syncotool PLC adatokhoz és IsiSave Gateway-hez"
+        },
+        {
+            id: 717, 
+            loc: "HC36", 
+            desc: "NC lokátor főkapcsoló utáni burkolat hiánya."
+        },
+        {
+            id: 718, 
+            loc: "HC36", 
+            desc: "Legelső biztosíték nem egyezik az előírttal.<br>Erste Sicherung passt nicht mit EPLAN.<br><br><b>E02.26 - Szelektivitás rendben van?</b><br>A betáplálás iránya felől minden védőkészülék egyel nagyobb értékű mint az utána következő? (lásd.:Megj.)"
+        },
+        {
+            id: 719, 
+            loc: "HC36", 
+            desc: "Nem megfelelő, a 402 üres.<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 720, 
+            loc: "HC36", 
+            desc: "8A van beállítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 721, 
+            loc: "HC36", 
+            desc: "Abszolút pozíció értékek vannak felvéve.<br><br><b>E10.08</b> - Hálózaton keresztül elérhető adatmentés PLC Syncotool PLC adatokhoz és IsiSave Gateway-hez"
+        },
+        {
+            id: 722, 
+            loc: "HC36", 
+            desc: "Nem átlátható.<br><br><b>E43.10</b> - Megfelel a Profinet kialakítása a PROFINET irányelv mező bus struktúrájának (topológia)?"
+        },
+        {
+            id: 723, 
+            loc: "HC37", 
+            desc: "H101 szekrény | Szikszalag az optikai csatlakozóknál.<br>Es gibt Klebeband bei Optikstecker."
+        },
+        {
+            id: 724, 
+            loc: "HC37", 
+            desc: "Nem megfelelő.<br><br><b>E02.30</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 725, 
+            loc: "HC37", 
+            desc: "10A van állítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 726, 
+            loc: "HC37", 
+            desc: "8A-ra van állítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 727, 
+            loc: "HC38", 
+            desc: "Nem egyeznek az online és offline adatok 010dt-nél.<br><br><b>E47.25</b> - A paraméterkészletek / projektadatok: - minden készülékben nem átmenetileg tárolva vannak - a dokumentációhoz mellékelve vannak."
+        },
+        {
+            id: 728, 
+            loc: "HC38", 
+            desc: "Többnél nem stimmel.<br>401 nem stimmel. 402 üres.<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 729, 
+            loc: "HC38", 
+            desc: "Nincs offset érték felvéve.<br><br><b>E10.08</b> - Hálózaton keresztül elérhető adatmentés PLC Syncotool PLC adatokhoz és IsiSave Gateway-hez"
+        },
+        {
+            id: 730, 
+            loc: "HC38", 
+            desc: "Nem átlátható.<br><br><b>E43.10</b> - Megfelel a Profinet kialakítása a PROFINET irányelv mező bus struktúrájának (topológia)?"
+        },
+        {
+            id: 731, 
+            loc: "HC39", 
+            desc: "001KH_001 online és offline adatok nem egyeznek.<br><br><b>E47.25</b> - A paraméterkészletek / projektadatok: - minden készülékben nem átmenetileg tárolva vannak - a dokumentációhoz mellékelve vannak."
+        },
+        {
+            id: 732, 
+            loc: "HC39", 
+            desc: "401 nem egyezik, 402 üres / 403 N.I.O.<br><br><b>E02.30</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 733, 
+            loc: "HC39", 
+            desc: "Nem átlátható.<br><br><b>E43.10</b> - Megfelel a Profinet kialakítása a PROFINET irányelv mező bus struktúrájának (topológia)?"
+        },
+        {
+            id: 734, 
+            loc: "UG36", 
+            desc: "010BR_001 nincsen sehol sem feltüntetve.<br><br><b>E02.02</b> - A tervjelezési rendszer megfelelő."
+        },
+        {
+            id: 804, 
+            loc: "VB35", 
+            desc: "NC lokátor betáp után nincs védőburkolat."
+        },
+        {
+            id: 805, 
+            loc: "VB35", 
+            desc: "080sgm009 nincs vakdugó.<br><br><b>E47.11</b> - A decentralizált készülékek összes csatlakozóján a nem használt csatlakozásoknál vakdugók vannak?"
+        },
+        {
+            id: 806, 
+            loc: "VB35", 
+            desc: "Nem egyezik egyik szekrényben sem.<br><br><b>E02.30</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 807, 
+            loc: "VB35", 
+            desc: "8A van állítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 808, 
+            loc: "VB35", 
+            desc: "Nem elérhetőek az offset értékek.<br><br><b>E10.08</b> - Hálózaton keresztül elérhető adatmentés PLC Syncotool PLC adatokhoz és IsiSave Gateway-hez"
+        },
+        {
+            id: 809, 
+            loc: "VB36", 
+            desc: "Nem megfelelő.<br>402-esben nincs biztosíték. Dokumentum alapján 3.15A-snak kell benne lennie.<br><br><b>E02.30</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 810, 
+            loc: "VB36", 
+            desc: "Nem megfelelő.<br>402-esben nincs biztosíték. Dokumentum alapján 3.15A-snak kell benne lennie.<br><br><b>E02.30</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 811, 
+            loc: "VB36", 
+            desc: "8A-ra van állítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 812, 
+            loc: "VB36", 
+            desc: "8A van állítva.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 813, 
+            loc: "VB37", 
+            desc: "<b>Hibák részletezve:</b><br>- H011-ben vannak eltérések a feltüntetett és a valódi áramértékek között, a motorvédő kapcsolóknak nincs feltüntetett értéke amivel össze tudnánk hasonlítani.<br>- H112 caparok-oknál nincs feltüntetve az áramérték, nem tudtuk ellenőrizni.<br>- 001KL101 mind 8 amperra van állítva, de rajz szerint másra kellene állítva lennie.<br>- H001-ben a 618, 619, 620 biztosítók nincsenek a kapcsolási rajzban feltüntetve.<br>- A főbiztosítékoknál is vannak eltérések az áramértéket illetően (506-os nem megfelelő).<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 814, 
+            loc: "VB37", 
+            desc: "H211 caparoc áramértékek nincsenek feltüntetve a kapcsolási rajzban, nem tudtuk ellenőrizni.<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 815, 
+            loc: "QS35", 
+            desc: "Hajtás szekrényeken nincs túlfolyó tartály."
+        },
+        {
+            id: 816, 
+            loc: "QS35", 
+            desc: "501-510 szigetelő szalaggal van tervjelezve.<br>000ee_001 h001 nincs feljelölve.<br><br><b>E02.02</b> - A tervjelezési rendszer megfelelő."
+        },
+        {
+            id: 817, 
+            loc: "QS35", 
+            desc: "QB1 értéke nem szerepel a darab listában, eplanban 400A van feltüntetve, 160A van bennük.<br><br><b>E02.30</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 818, 
+            loc: "QS35", 
+            desc: "Több eltérés.<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 819, 
+            loc: "UG35", 
+            desc: "Nem egyeznek.<br><br><b>E47.25</b> - A paraméterkészletek / projektadatok: - minden készülékben nem átmenetileg tárolva vannak - a dokumentációhoz mellékelve vannak."
+        },
+        {
+            id: 820, 
+            loc: "UG35", 
+            desc: "Több eltérés.<br><br><b>E02.27</b> - Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?"
+        },
+        {
+            id: 821, 
+            loc: "UG35", 
+            desc: "Csak 5A van használva, konfig eltér az előírttól.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 822, 
+            loc: "UG35", 
+            desc: "Nincs syncro.<br><br><b>E10.08</b> - Hálózaton keresztül elérhető adatmentés PLC Syncotool PLC adatokhoz és IsiSave Gateway-hez"
+        },
+        {
+            id: 823, 
+            loc: "UG35", 
+            desc: "Nem átlátható.<br><br><b>E43.10</b> - Megfelel a Profinet kialakítása a PROFINET irányelv mező bus struktúrájának (topológia)?"
+        },
+        {
+            id: 824, 
+            loc: "UG35", 
+            desc: "Nem megfelelő értékek.<br><br><b>E10.07</b> - A Locc Box beállítások (kapcsolási állás 10 / 5, 10A és tehetetlenség 3) szúrópróbaszerű ellenőrzése."
+        },
+        {
+            id: 825, 
+            loc: "UG35", 
+            desc: "Nem érhető el sem a syncro se a gateway konfiguráció.<br><br><b>E10.08</b> - Hálózaton keresztül elérhető adatmentés PLC Syncotool PLC adatokhoz és IsiSave Gateway-hez"
+        },
+        {
+            id: 826, 
+            loc: "UB32", 
+            desc: "GBO Betriebsfunktionen Eredmények NIO.<br>Hinweis: NG oder Leer Zellen soll noch durchführen!!!"
+        },
+        {
+            id: 827, 
+            loc: "UB33", 
+            desc: "GBO Betriebsfunktionen Eredmények NIO.<br>Hinweis: NG oder Leer Zellen soll noch durchführen!!!"
+        },
+        {
+            id: 828, 
+            loc: "UB34", 
+            desc: "GBO Betriebsfunktionen Eredmények NIO.<br>Hinweis: NG oder Leer Zellen soll noch durchführen!!!"
+        },
+        {
+            id: 829, 
+            loc: "UB35", 
+            desc: "GBO Betriebsfunktionen Eredmények NIO.<br>Hinweis: NG oder Leer Zellen soll noch durchführen!!!"
+        },
+        {
+            id: 830, 
+            loc: "UG35", 
+            desc: "GBO Betriebsfunktionen Eredmények NIO.<br>Hinweis: NG oder Leer Zellen soll noch durchführen!!!"
+        },
+        {
+            id: 831, 
+            loc: "UG36", 
+            desc: "GBO Betriebsfunktionen Eredmények NIO.<br>Hinweis: NG oder Leer Zellen soll noch durchführen!!!"
+        },
+        {
+            id: 832, 
+            loc: "QS35", 
+            desc: "Bitte den zu viele Störungen und Warnungen (siehe Top Störungen im Anhang) in SPS Program prüfen und beheben!"
+        },
+        {
+            id: 1046, 
+            loc: "HC35", 
+            desc: "Kein Keba Panel!<br>Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1047, 
+            loc: "HC35", 
+            desc: "Eplan ist mit Handschrift ärgenzt! NIO.<br>Kein Keba Panel!<br>Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1048, 
+            loc: "HC35", 
+            desc: "Kein Label für Externe Spannung ist vorhanden. (Mitarbeiter Ventilátor).<br>Kein Keba Panel! Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1049, 
+            loc: "HC36", 
+            desc: "Kein Label für Externe Spannung ist vorhanden. (Mitarbeiter Ventilátor).<br>Kein Keba Panel! Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1050, 
+            loc: "HC37", 
+            desc: "Nem minden irányba mozgatható!<br><br><b>E45.01</b> - MV5xx: Úgy lett a kamera telepítve, hogy az X-Y-Z irányban álítható?"
+        },
+        {
+            id: 1051, 
+            loc: "HC37", 
+            desc: "Nem minden irányba mozgatható!<br><br><b>E45.01</b> - MV5xx: Úgy lett a kamera telepítve, hogy az X-Y-Z irányban álítható?"
+        },
+        {
+            id: 1052, 
+            loc: "HC38", 
+            desc: "60dgc109 előtti védőlemez a spanneren hiányzik.<br><br><b>E45.02</b> - MV5xx: Úgy lett a kamera telepítve, hogy a gyártásfolyamatból adódó rezgésekre, rázkódásokra érzéketlen?"
+        },
+        {
+            id: 1053, 
+            loc: "HC39", 
+            desc: "Nem minden irányba mozgatható! NIO.<br><br><b>E45.01</b> - MV5xx: Úgy lett a kamera telepítve, hogy az X-Y-Z irányban álítható?"
+        },
+        {
+            id: 1054, 
+            loc: "VB35", 
+            desc: "Igen de papírra van nyomtatva.<br><br><b>E02.19</b> - Veszélyes feszültséget jelző figyelmeztetőtábla (sárga háromszög, fekete villámjellel) minden kapcsolószekrény panelon rajta van?"
+        },
+        {
+            id: 1055, 
+            loc: "VB35", 
+            desc: "Az optikai kábel nem jól van elvezetve.<br><br><b>E02.52</b> - Kábelek tervjelezése megfelelő? (lásd PRL tervjelek)"
+        },
+        {
+            id: 1056, 
+            loc: "HC38", 
+            desc: "Nem minden irányba mozgatható! NIO.<br><br><b>E45.01</b> - MV5xx: Úgy lett a kamera telepítve, hogy az X-Y-Z irányban álítható?"
+        },
+        {
+            id: 1057, 
+            loc: "HC38", 
+            desc: "Kein Keba Panel!<br>Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1058, 
+            loc: "VB35", 
+            desc: "Nincs, hiányos.<br><br><b>E02.20</b> - Megfelelő címkék rögzítve vannak az alábbi felirattal: 'Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt'?"
+        },
+        {
+            id: 1059, 
+            loc: "VB35", 
+            desc: "EPLAN fehlt!!! Nincs benne.<br><br><b>E10.01</b> - A szekrényben található E-plan tartalmazza-e a letelepített NC-locatorokat? (Aktualizált Loop-Lista)"
+        },
+        {
+            id: 1060, 
+            loc: "VB36", 
+            desc: "80RB100 Schlaupacket NIO. Nicht richtige benutzt! (Nem megfelelő Schlauchpacket van használva a roboton)."
+        },
+        {
+            id: 1061, 
+            loc: "VB36", 
+            desc: "Kabel NIO, siehe Bild!!!<br>080WZA209 mellett ki vagy beépités alatt áll a 080DGC209.<br>Nem megfelelő kábelelrendezés."
+        },
+        {
+            id: 1062, 
+            loc: "VB36", 
+            desc: "002BR_020<br>A KP32 plusz nyomógomb világit."
+        },
+        {
+            id: 1063, 
+            loc: "VB36", 
+            desc: "50GST009-nel nem megfelelő valamint latszodik a csatlakozon az emiatti elhasznalodas is.<br><br><b>E10.11</b> - A Can-vezetékek minimális hajlítási szögét betartották (többszörös hajlítás esetén > 7,5cm)?"
+        },
+        {
+            id: 1064, 
+            loc: "VB37", 
+            desc: "Fent van, de papír.<br><br><b>E02.19</b> - Veszélyes feszültséget jelző figyelmeztetőtábla (sárga háromszög, fekete villámjellel) minden kapcsolószekrény panelon rajta van?"
+        },
+        {
+            id: 1065, 
+            loc: "VB37", 
+            desc: "EPLAN fehlt!!! Nincs benne.<br><br><b>E10.01</b> - A szekrényben található E-plan tartalmazza-e a letelepített NC-locatorokat? (Aktualizált Loop-Lista)"
+        },
+        {
+            id: 1066, 
+            loc: "VB37", 
+            desc: "Az optikai kábel nem jól van elvezetve.<br><br><b>E02.52</b> - Kábelek tervjelezése megfelelő? (lásd PRL tervjelek)"
+        },
+        {
+            id: 1067, 
+            loc: "VB37", 
+            desc: "GBO Template (Duplikált tétel?)"
+        },
+        {
+            id: 1068, 
+            loc: "VB37", 
+            desc: "Kein Keba Panel!<br>Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1069, 
+            loc: "VB37", 
+            desc: "Nincs, hiányos.<br><br><b>E02.20</b> - Megfelelő címkék rögzítve vannak az alábbi felirattal: 'Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt'?"
+        },
+        {
+            id: 1070, 
+            loc: "VB37", 
+            desc: "Nincs benne.<br><br><b>E10.01</b> - A szekrényben található E-plan tartalmazza-e a letelepített NC-locatorokat? (Aktualizált Loop-Lista)"
+        },
+        {
+            id: 1071, 
+            loc: "UG35", 
+            desc: "Nincsen.<br><br><b>E02.20</b> - Megfelelő címkék rögzítve vannak az alábbi felirattal: 'Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt'?"
+        },
+        {
+            id: 1072, 
+            loc: "UG35", 
+            desc: "Nincsen.<br><br><b>E02.22</b> - A fő betáp szekrény címkéje rögzítve van? (csak +H011) (150x150mm) Verzió, pozíció, tartalom rendben van?"
+        },
+        {
+            id: 1073, 
+            loc: "UG35", 
+            desc: "Z tengely fix, 150dgc egy spanneren van.<br><br><b>E45.01</b> - MV5xx: Úgy lett a kamera telepítve, hogy az X-Y-Z irányban álítható?"
+        },
+        {
+            id: 1074, 
+            loc: "UG35", 
+            desc: "150dgc spanneren van.<br><br><b>E45.02</b> - MV5xx: Úgy lett a kamera telepítve, hogy a gyártásfolyamatból adódó rezgésekre, rázkódásokra érzéketlen?"
+        },
+        {
+            id: 1075, 
+            loc: "QS35", 
+            desc: "Nem minden irányba mozgatható! NIO.<br><br><b>E45.01</b> - MV5xx: Úgy lett a kamera telepítve, hogy az X-Y-Z irányban álítható?"
+        },
+        {
+            id: 1076, 
+            loc: "QS35", 
+            desc: "Kein Keba Panel!<br>Stecker Deckel hiányzik!"
+        },
+        {
+            id: 1077, 
+            loc: "UG35", 
+            desc: "150dgc spanneren van NIO.<br><br><b>E45.03</b> - MV5xx: A kamera külső erőbehatások ellen védett? Nem könnyen elmozdítható, elforgatható? stb..."
+        },
+        {
+            id: 1078, 
+            loc: "UG35", 
+            desc: "150dgc nem megfelelő.<br><br><b>E45.18</b> - MV5xx: A rendszer a Band3 25-ös fejezetben lévő leírás alapján lett kiépítve és parametrizálva?"
+        }
     ];
 
     let lopData = JSON.parse(JSON.stringify(initialData));
@@ -482,9 +839,7 @@
             
             card.onclick = (e) => toggleStatus(item.id, card);
 
-            // Sortörések kezelése a HTML-ben
-            const formattedDesc = item.desc.replace(/\n/g, '<br>');
-
+            // A HTML tagek működjenek (innerHTML)
             card.innerHTML = `
                 <div class="card-id">
                     #${item.id}
@@ -494,7 +849,7 @@
                         <span class="location-badge">${item.loc}</span>
                     </div>
                     <div class="problem-text">
-                        ${formattedDesc}
+                        ${item.desc}
                     </div>
                 </div>
                 <div class="checkbox-area">
