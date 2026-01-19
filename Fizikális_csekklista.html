@@ -272,13 +272,13 @@
 
 <div class="container">
     <header>
-        <h1>LOP Hibalista Kezelő</h1>
-        <p class="subtitle">Automatikus mentés bekapcsolva</p>
+        <h1>Hibalista Kezelő</h1>
+        <p class="subtitle">Balázs Norbert</p>
 
         <div class="action-bar">
-            <button class="btn-save" onclick="downloadState()">💾 Mentés Fájlba</button>
-            <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Betöltés Fájlból</button>
-            <button class="btn-reset" onclick="resetAll()">🗑️ Minden törlése</button>
+            <button class="btn-save" onclick="downloadState()">Mentés</button>
+            <button class="btn-load" onclick="document.getElementById('fileInput').click()">Betöltés</button>
+            <button class="btn-reset" onclick="resetAll()">Törlés</button>
             <input type="file" id="fileInput" style="display: none;" onchange="loadFromFile(this)">
         </div>
     </header>
@@ -590,4 +590,5 @@
 </script>
 
 </body>
+
 </html>
