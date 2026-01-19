@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOP Hibalista Kezelő (Mentéssel)</title>
+    <title>LOP Hibalista - Teljes Magyar Leírás</title>
     <style>
         :root {
             --primary-color: #0056b3;
             --bg-color: #f4f7f6;
             --card-bg: #ffffff;
-            --text-color: #333;
+            --text-color: #212529;
             --gray-border: #ccc;
             --green-success: #d4edda;
             --green-border: #28a745;
@@ -27,6 +27,7 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
+            padding-bottom: 50px;
         }
 
         header {
@@ -42,6 +43,7 @@
         .subtitle {
             color: #666;
             margin-bottom: 20px;
+            font-size: 0.9em;
         }
 
         .action-bar {
@@ -53,31 +55,22 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             transition: background 0.2s;
             font-size: 0.9em;
         }
 
-        .btn-save {
-            background-color: var(--primary-color);
-            color: white;
-        }
+        .btn-save { background-color: var(--primary-color); color: white; }
         .btn-save:hover { background-color: #004494; }
 
-        .btn-load {
-            background-color: #6c757d;
-            color: white;
-        }
+        .btn-load { background-color: #6c757d; color: white; }
         .btn-load:hover { background-color: #5a6268; }
 
-        .btn-reset {
-            background-color: #dc3545;
-            color: white;
-        }
+        .btn-reset { background-color: #dc3545; color: white; }
         .btn-reset:hover { background-color: #c82333; }
 
         .stats-bar {
@@ -91,16 +84,8 @@
             font-weight: bold;
         }
 
-        .stat-item span {
-            display: block;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .stat-item strong {
-            font-size: 1.4em;
-            color: var(--primary-color);
-        }
+        .stat-item span { display: block; font-size: 0.85em; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-item strong { font-size: 1.5em; color: var(--primary-color); }
 
         .search-box {
             width: 100%;
@@ -124,12 +109,12 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             display: flex;
-            align-items: center;
+            align-items: stretch;
             padding: 0;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
             overflow: hidden;
-            position: relative;
+            border: 1px solid transparent;
         }
 
         .card.pending {
@@ -139,77 +124,84 @@
         
         .card.pending:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #e0e0e0;
         }
 
         .card.done {
             border-left: 6px solid var(--green-border);
-            background-color: var(--green-success);
-            opacity: 0.9;
+            background-color: #f8fff9;
+            opacity: 0.85;
         }
 
         .card-id {
-            background-color: #f0f0f0;
-            padding: 20px 15px;
-            font-weight: bold;
+            background-color: #f8f9fa;
+            padding: 15px;
+            font-weight: 700;
             font-size: 1.1em;
-            min-width: 60px;
-            text-align: center;
-            border-right: 1px solid #eee;
+            min-width: 50px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            height: 100%;
+            border-right: 1px solid #eee;
+            color: #555;
         }
         
         .card.done .card-id {
-            background-color: rgba(255,255,255,0.5);
+            background-color: rgba(40, 167, 69, 0.1);
             color: var(--green-border);
         }
 
         .card-content {
             flex-grow: 1;
-            padding: 15px 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
         }
 
         .location-badge {
             background-color: #007bff;
             color: white;
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.8em;
+            font-size: 0.85em;
             font-weight: bold;
-            text-transform: uppercase;
         }
 
         .problem-text {
             font-size: 1em;
             line-height: 1.5;
-            color: #444;
+            color: #333;
+            white-space: pre-wrap; /* Hogy a sortörések megmaradjanak */
         }
 
         .checkbox-area {
-            padding: 20px;
+            padding: 0 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-left: 1px solid #eee;
+            background-color: #fafafa;
         }
 
         .custom-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #aaa;
+            width: 26px;
+            height: 26px;
+            border: 2px solid #adb5bd;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            background: white;
         }
 
         .card.done .custom-checkbox {
@@ -218,17 +210,15 @@
         }
 
         .custom-checkbox::after {
-            content: '✔';
+            content: '✓';
             color: white;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: bold;
             display: none;
         }
 
-        .card.done .custom-checkbox::after {
-            display: block;
-        }
+        .card.done .custom-checkbox::after { display: block; }
         
-        /* Toast notification */
         #toast {
             visibility: hidden;
             min-width: 250px;
@@ -236,14 +226,14 @@
             background-color: #333;
             color: #fff;
             text-align: center;
-            border-radius: 2px;
+            border-radius: 4px;
             padding: 16px;
             position: fixed;
-            z-index: 1;
+            z-index: 100;
             left: 50%;
             bottom: 30px;
-            font-size: 17px;
-            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         #toast.show {
@@ -251,20 +241,14 @@
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
         }
 
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-        }
-
-        @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-        }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
         @media (max-width: 600px) {
-            .card { flex-direction: column; align-items: stretch; }
-            .card-id { border-right: none; border-bottom: 1px solid #eee; flex-direction: row; justify-content: space-between; padding: 10px 15px; }
-            .checkbox-area { position: absolute; top: 10px; right: 10px; }
+            .card { flex-direction: column; }
+            .card-id { border-right: none; border-bottom: 1px solid #eee; width: auto; justify-content: flex-start; padding: 10px 15px; }
+            .checkbox-area { position: absolute; top: 12px; right: 15px; border: none; background: transparent; padding: 0; }
+            .card-content { padding-top: 10px; }
         }
     </style>
 </head>
@@ -272,20 +256,20 @@
 
 <div class="container">
     <header>
-        <h1>Hibalista Kezelő</h1>
-        <p class="subtitle">Balázs Norbert</p>
+        <h1>LOP Hibalista - Teljes</h1>
+        <p class="subtitle">Automatikus mentés aktív | Részletes magyar leírások</p>
 
         <div class="action-bar">
-            <button class="btn-save" onclick="downloadState()">Mentés</button>
-            <button class="btn-load" onclick="document.getElementById('fileInput').click()">Betöltés</button>
-            <button class="btn-reset" onclick="resetAll()">Törlés</button>
+            <button class="btn-save" onclick="downloadState()">💾 Mentés Fájlba</button>
+            <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Betöltés</button>
+            <button class="btn-reset" onclick="resetAll()">🗑️ Reset</button>
             <input type="file" id="fileInput" style="display: none;" onchange="loadFromFile(this)">
         </div>
     </header>
 
     <div class="stats-bar">
         <div class="stat-item">
-            <span>Összes elem</span>
+            <span>Összes</span>
             <strong id="total-count">0</strong>
         </div>
         <div class="stat-item">
@@ -293,12 +277,12 @@
             <strong id="done-count" style="color: var(--green-border);">0</strong>
         </div>
         <div class="stat-item">
-            <span>Hátravan</span>
+            <span>Hátralévő</span>
             <strong id="pending-count" style="color: var(--gray-left-border);">0</strong>
         </div>
     </div>
 
-    <input type="text" id="searchInput" class="search-box" placeholder="Keresés ID, Helyszín vagy Szöveg alapján...">
+    <input type="text" id="searchInput" class="search-box" placeholder="Keresés: ID, Helyszín vagy szövegrészlet...">
 
     <div id="listContainer" class="list-container">
         </div>
@@ -307,147 +291,134 @@
 <div id="toast">Mentve!</div>
 
 <script>
-    // Az adatok
+    // AZ ADATOK - TELJES MAGYAR LEÍRÁSSAL
     const initialData = [
-        {id: 662, loc: "UB35", desc: "SPS1 IW7 - Hardware NOK. A kapcsolási rajz szerint nincs pontos karakterisztika megadva némelyik résztvevőhöz. Olvadóbiztosítók és védőkapcsolók ellenőrzése szükséges."},
-        {id: 663, loc: "UB35", desc: "SPS1 IW7 - NC-Lokatoren NOK. A Locc Box 002-es moduljának nincs nyomógombja. Locc Box beállítások szúrópróbaszerű ellenőrzése."},
-        {id: 711, loc: "HC35", desc: "SPS1 IW7 - Antriebstechnik NOK. 005LE_001-MA1 fékellenállása nem jól van felszerelve (vízszintesen áll, függőlegesen kellene)."},
-        {id: 712, loc: "HC35", desc: "SPS1 IW7 - Antriebstechnik NOK. 010DT_009-MA1 geber kábel árnyékolásáról hiányzik a réz szalag, gyári műanyag fólia nincs leválasztva."},
-        {id: 713, loc: "HC35", desc: "SPS1 IW7 - Antriebstechnik NOK. 10DT009-nél 20M-es motorkábel van, viszont nincsen hálózati szűrő a frekvenciaváltón."},
-        {id: 714, loc: "HC35", desc: "SPS1 IW7 - Hardware NOK. 401-es fő késes biztosítékok (QB1) a dokumentáció szerint 315A, de valóságban 200A. NC lokátor caparoc beállítás rossz (8A helyett 10A kell)."},
-        {id: 715, loc: "HC35", desc: "SPS1 IW7 - NC-Lokatoren NOK. 8A-re van állítva (10A helyett)."},
-        {id: 716, loc: "HC35", desc: "SPS1 IW7 - NC-Lokatoren NOK. Nem megfelelő értékek vannak felvéve (offset helyett abszolút pozícióérték)."},
-        {id: 717, loc: "HC36", desc: "SPS1 Egyéni NOK. NC lokátor főkapcsoló utáni burkolat hiánya."},
-        {id: 718, loc: "HC36", desc: "SPS1 IW7 - Hardware NOK. Legelső biztosíték nem egyezik az előírttal (Szelektivitás)."},
-        {id: 719, loc: "HC36", desc: "SPS1 IW7 - Hardware NOK. Nem megfelelő, a 402 üres. Biztosítékok ellenőrzése."},
-        {id: 720, loc: "HC36", desc: "SPS1 IW7 - NC-Lokatoren NOK. 8A van beállítva (Locc Box)."},
-        {id: 721, loc: "HC36", desc: "SPS1 IW7 - NC-Lokatoren NOK. Abszolút pozíció értékek vannak felvéve offset helyett."},
-        {id: 722, loc: "HC36", desc: "SPS1 IW7 - Profinet/Profisafe NOK. Topológia nem átlátható, nem felel meg a szabványnak."},
-        {id: 723, loc: "HC37", desc: "SPS1 Egyéni NOK. H101 szekrény: szikszalag az optikai csatlakozóknál."},
-        {id: 724, loc: "HC37", desc: "SPS1 IW7 - Hardware NOK. Nem megfelelő biztosíték értékek/beállítások."},
-        {id: 725, loc: "HC37", desc: "SPS1 IW7 - NC-Lokatoren NOK. 10A van állítva (ellenőrizni)."},
-        {id: 726, loc: "HC37", desc: "SPS2 IW7 - NC-Lokatoren NOK. 8A-ra van állítva."},
-        {id: 727, loc: "HC38", desc: "SPS1 IW7 - Antriebstechnik NOK. Nem egyeznek az online és offline adatok a 010dt-nél."},
-        {id: 728, loc: "HC38", desc: "SPS1 IW7 - Hardware NOK. Többnél nem stimmel (pl. 401). 402 üres."},
-        {id: 729, loc: "HC38", desc: "SPS1 IW7 - NC-Lokatoren NOK. Nincs offset érték felvéve."},
-        {id: 730, loc: "HC38", desc: "SPS1 IW7 - Profinet/Profisafe NOK. Topológia nem átlátható, nem szabványos."},
-        {id: 731, loc: "HC39", desc: "SPS1 IW7 - Antriebstechnik NOK. 001KH_001 online és offline adatok nem egyeznek."},
-        {id: 732, loc: "HC39", desc: "SPS1 IW7 - Hardware NOK. 401 nem egyezik, 402 üres, 403 NOK."},
-        {id: 733, loc: "HC39", desc: "SPS1 IW7 - Profinet/Profisafe NOK. Topológia nem átlátható."},
-        {id: 734, loc: "UG36", desc: "SPS1 IW7 - Hardware NOK. 010BR_001 nincsen sehol sem feltüntetve (hiányos jelölés)."},
-        {id: 804, loc: "VB35", desc: "SPS1 Egyéni NOK. NC lokátor betáp után nincs védőburkolat."},
-        {id: 805, loc: "VB35", desc: "SPS1 IW7 - Antriebstechnik NOK. 080sgm009 nincs vakdugó."},
-        {id: 806, loc: "VB35", desc: "SPS1 IW7 - Hardware NOK. Biztosíték értékek nem egyeznek egyik szekrényben sem."},
-        {id: 807, loc: "VB35", desc: "SPS1 IW7 - NC-Lokatoren NOK. 8A van állítva."},
-        {id: 808, loc: "VB35", desc: "SPS1 IW7 - NC-Lokatoren NOK. Nem elérhetőek az offset értékek."},
-        {id: 809, loc: "VB36", desc: "SPS2 IW7 - Hardware NOK. 402-esben nincs biztosíték (3.15A kellene)."},
-        {id: 810, loc: "VB36", desc: "SPS2 IW7 - Hardware NOK. 402-es hiányzó biztosíték ismétlés."},
-        {id: 811, loc: "VB36", desc: "SPS2 IW7 - NC-Lokatoren NOK. 8A-ra van állítva."},
-        {id: 812, loc: "VB36", desc: "SPS3 IW7 - NC-Lokatoren NOK. 8A-ra van állítva."},
-        {id: 813, loc: "VB37", desc: "SPS1 IW7 - Hardware NOK. H011 eltérések feltüntetett/valós áramértékek közt. Motorvédőkön nincs érték. H112 Caparoc érték hiányzik. 001KL101 8A-re állítva (rossz)."},
-        {id: 814, loc: "VB37", desc: "SPS2 IW7 - Hardware NOK. H211 Caparoc áramértékek nincsenek feltüntetve a rajzban."},
-        {id: 815, loc: "QS35", desc: "SPS1 Egyéni NOK. Hajtás szekrényeken nincs túlfolyó tartály."},
-        {id: 816, loc: "QS35", desc: "SPS1 IW7 - Hardware NOK. 501-510 szigetelőszalaggal jelölve, 000ee_001 h001 nincs feljelölve."},
-        {id: 817, loc: "QS35", desc: "SPS1 IW7 - Hardware NOK. QB1 értéke hiányzik a darablistából (Eplan: 400A, Valós: 160A)."},
-        {id: 818, loc: "QS35", desc: "SPS1 IW7 - Hardware NOK. Több eltérés a biztosíték értékekben."},
-        {id: 819, loc: "UG35", desc: "SPS1 IW7 - Antriebstechnik NOK. Paraméterkészletek nem egyeznek."},
-        {id: 820, loc: "UG35", desc: "SPS1 IW7 - Hardware NOK. Több biztosíték eltér a rajztól."},
-        {id: 821, loc: "UG35", desc: "SPS1 IW7 - NC-Lokatoren NOK. Csak 5A van használva, konfig eltér az előírttól."},
-        {id: 822, loc: "UG35", desc: "SPS1 IW7 - NC-Lokatoren NOK. Nincs syncro (adatmentés)."},
-        {id: 823, loc: "UG35", desc: "SPS1 IW7 - Profinet/Profisafe NOK. Topológia nem átlátható."},
-        {id: 824, loc: "UG35", desc: "SPS2 IW7 - NC-Lokatoren NOK. Nem megfelelő értékek."},
-        {id: 825, loc: "UG35", desc: "SPS2 IW7 - NC-Lokatoren NOK. Nem érhető el sem a syncro se a gateway konfiguráció."},
-        {id: 826, loc: "UB32", desc: "GBO Betriebsfunktionen: NG vagy üres cellák (Papírmentes doku, Mobsy, Profienergy ellenőrzés)."},
-        {id: 827, loc: "UB33", desc: "GBO Betriebsfunktionen: NG vagy üres cellák."},
-        {id: 828, loc: "UB34", desc: "GBO Betriebsfunktionen: NG vagy üres cellák."},
-        {id: 829, loc: "UB35", desc: "GBO Betriebsfunktionen: NG vagy üres cellák."},
-        {id: 830, loc: "UG35", desc: "GBO Betriebsfunktionen: NG vagy üres cellák."},
-        {id: 831, loc: "UG36", desc: "GBO Betriebsfunktionen: NG vagy üres cellák."},
-        {id: 832, loc: "QS35", desc: "Túl sok zavar és figyelmeztetés az SPS programban (Top Störungen)."},
-        {id: 1046, loc: "HC35", desc: "Nincs Keba Panel! Stecker fedél hiányzik!"},
-        {id: 1047, loc: "HC35", desc: "Eplan kézírással kiegészítve (NIO). Nincs Keba Panel, fedél hiányzik."},
-        {id: 1048, loc: "HC35", desc: "Nincs Label az 'Externe Spannung'-hoz (Ventilátor). Nincs Keba Panel."},
-        {id: 1049, loc: "HC36", desc: "Nincs Label az 'Externe Spannung'-hoz. Nincs Keba Panel."},
-        {id: 1050, loc: "HC37", desc: "SPS1 IW7 - Identtechnik NOK. Kamera nem mozgatható minden irányba (X-Y-Z)."},
-        {id: 1051, loc: "HC37", desc: "SPS2 IW7 - Identtechnik NOK. Kamera nem mozgatható minden irányba."},
-        {id: 1052, loc: "HC38", desc: "SPS1 IW7 - Identtechnik NOK. 60dgc109 előtti védőlemez a spanneren hiányzik."},
-        {id: 1053, loc: "HC39", desc: "SPS1 IW7 - Identtechnik NOK. Kamera nem állítható minden irányba."},
-        {id: 1054, loc: "VB35", desc: "SPS1 IW7 - Hardware NOK. Feszültség figyelmeztető tábla papírra van nyomtatva."},
-        {id: 1055, loc: "VB35", desc: "SPS1 IW7 - Hardware NOK. Optikai kábel nem jól van elvezetve."},
-        {id: 1056, loc: "HC38", desc: "SPS1 IW7 - Identtechnik NOK. Kamera állíthatóság probléma."},
-        {id: 1057, loc: "HC38", desc: "Nincs Keba Panel! Stecker fedél hiányzik!"},
-        {id: 1058, loc: "VB35", desc: "SPS1 IW7 - Hardware NOK. 'Vigyázat feszültség alatt' címkék hiányosak."},
-        {id: 1059, loc: "VB35", desc: "SPS1 IW7 - NC-Lokatoren NOK. EPLAN hiányzik (NC-locator lista)."},
-        {id: 1060, loc: "VB36", desc: "SPS2 Egyéni NOK. 80RB100 Schlauchpaket NIO. Nem megfelelő típus a roboton."},
-        {id: 1061, loc: "VB36", desc: "SPS2 Egyéni NOK. 080WZA209 mellett nem megfelelő kábelelrendezés (080DGC209)."},
-        {id: 1062, loc: "VB36", desc: "SPS2 Egyéni NOK. 002BR_020 A KP32 plusz nyomógomb világít (hiba)."},
-        {id: 1063, loc: "VB36", desc: "SPS2 IW7 - NC-Lokatoren NOK. 50GST009-nél nem megfelelő hajlítási sugár (elhasználódás látható)."},
-        {id: 1064, loc: "VB37", desc: "SPS1 IW7 - Hardware NOK. Feszültség jelző tábla papír alapú."},
-        {id: 1065, loc: "VB37", desc: "SPS1 IW7 - NC-Lokatoren NOK. EPLAN hiányzik."},
-        {id: 1066, loc: "VB37", desc: "SPS1 IW7 - Hardware NOK. Optikai kábel nem jól vezetve."},
-        {id: 1067, loc: "VB37", desc: "SPS1 (Duplikált/Hiányos bejegyzés, GBO Template)."},
-        {id: 1068, loc: "VB37", desc: "Nincs Keba Panel! Stecker fedél hiányzik."},
-        {id: 1069, loc: "VB37", desc: "SPS1 IW7 - Hardware NOK. 'Vigyázat feszültség' címkék hiányosak."},
-        {id: 1070, loc: "VB37", desc: "SPS1 IW7 - NC-Lokatoren NOK. EPLAN hiányzik."},
-        {id: 1071, loc: "UG35", desc: "SPS1 IW7 - Hardware NOK. Feszültség figyelmeztető címkék nincsenek."},
-        {id: 1072, loc: "UG35", desc: "SPS1 IW7 - Hardware NOK. Fő betáp szekrény címkéje hiányzik (+H011)."},
-        {id: 1073, loc: "UG35", desc: "SPS1 IW7 - Identtechnik NOK. Z tengely fix, 150dgc egy spanneren van."},
-        {id: 1074, loc: "UG35", desc: "SPS1 IW7 - Identtechnik NOK. 150dgc rezgésvédelem probléma (spanneren van)."},
-        {id: 1075, loc: "QS35", desc: "SPS1 IW7 - Identtechnik NOK. Kamera nem minden irányba állítható."},
-        {id: 1076, loc: "QS35", desc: "Nincs Keba Panel! Stecker fedél hiányzik."},
-        {id: 1077, loc: "UG35", desc: "SPS1 IW7 - Identtechnik NOK. 150dgc védelem külső behatás ellen (könnyen elmozdítható)."},
-        {id: 1078, loc: "UG35", desc: "SPS1 IW7 - Identtechnik NOK. 150dgc nem megfelelő rendszer kiépítés (Band3 alapján)."}
+        {id: 662, loc: "UB35", desc: "A kapcsolási rajz szerint nincs pontos karakterisztika megadva némelyik résztvevő Locc boxához. (Nem ismert, mely résztvevők azok >> COMAN-ba rögzítés előtt javasolt a pont L2,5-L3 ellenőrzése.)"},
+        {id: 663, loc: "UB35", desc: "Az értékek jók, viszont az UB35 660VR001 NC lokátor Locc Boxának 002-es moduljának nincs nyomógombja. Még mindig nincs nyomógombja."},
+        {id: 711, loc: "HC35", desc: "005LE_001-MA1 fékellenállása nem jól van felszerelve. (Vízszintesen áll pedig függőlegesen kellene neki). A csatlakozás árnyékolt Lenze rendszerkábellel lett kivitelezve?"},
+        {id: 712, loc: "HC35", desc: "010DT_009-MA1 geber kábel árnyékolásáról hiányzik a réz szalag, illetve még a gyári műanyag fólia sincs leválasztva."},
+        {id: 713, loc: "HC35", desc: "10DT009-nél 20m-es motorkábel van, viszont nincsen hálózati szűrő a frekvenciaváltón."},
+        {id: 714, loc: "HC35", desc: "401-es fő késes biztosítékok (QB1) a dokumentáció szerint 315A-nak kellene lennie, de a valóságban 200A-os biztosítékok vannak bent.\nValamint az összes NC lokátor caparoc-ja 8A-re van beállítva és 10A-re kellene."},
+        {id: 715, loc: "HC35", desc: "8A-re van állítva (Locc Box)."},
+        {id: 716, loc: "HC35", desc: "Nem megfelelő értékek vannak felvéve (offset helyett abszolút pozícióérték)."},
+        {id: 717, loc: "HC36", desc: "NC lokátor főkapcsoló utáni burkolat hiánya!"},
+        {id: 718, loc: "HC36", desc: "Legelső biztosíték nem egyezik az előírttal. (Szelektivitás rendben van?)"},
+        {id: 719, loc: "HC36", desc: "Nem megfelelő, a 402 üres. (Biztosítékok és megszakítók áramértéke és karakterisztikája a kapcsolási rajz szerinti?)"},
+        {id: 720, loc: "HC36", desc: "8A-re van állítva (Locc Box)."},
+        {id: 721, loc: "HC36", desc: "Abszolút pozíció értékek vannak felvéve."},
+        {id: 722, loc: "HC36", desc: "Nem átlátható. Topológia a TIA-ban nem standard, nincs keresztezés a PN vonalon."},
+        {id: 723, loc: "HC37", desc: "H101 szekrény: Szikszalag az optikai csatlakozóknál."},
+        {id: 724, loc: "HC37", desc: "Nem megfelelő biztosíték/megszakító áramértékek."},
+        {id: 725, loc: "HC37", desc: "10A van állítva. (Szúrópróbaszerű ellenőrzés: kapcsolási állás 10/5, 10A és tehetetlenség 3)."},
+        {id: 726, loc: "HC37", desc: "8A-ra van állítva."},
+        {id: 727, loc: "HC38", desc: "Nem egyeznek az online és offline adatok 010DT-nél."},
+        {id: 728, loc: "HC38", desc: "Többnél nem stimmel. 401 nem stimmel. 402 üres. (Biztosítékok nem egyeznek az EPLAN-nal)."},
+        {id: 729, loc: "HC38", desc: "Nincs offset érték felvéve."},
+        {id: 730, loc: "HC38", desc: "Nem átlátható. Topológia a TIA-ban NIO. Nincs keresztezés a PN vonalon. Kérjük a PRL betartását!"},
+        {id: 731, loc: "HC39", desc: "001KH_001 online és offline adatok nem egyeznek."},
+        {id: 732, loc: "HC39", desc: "401 nem egyezik, 402 üres, 403 NIO. (Biztosítékok nem egyeznek az EPLAN-nal)."},
+        {id: 733, loc: "HC39", desc: "Nem átlátható. Topológia a TIA-ban NIO, nincs keresztezés a PN vonalon."},
+        {id: 734, loc: "UG36", desc: "010BR_001 nincsen sehol sem feltüntetve."},
+        {id: 804, loc: "VB35", desc: "NC lokátor betáp után nincs védőburkolat."},
+        {id: 805, loc: "VB35", desc: "080sgm009 nincs vakdugó."},
+        {id: 806, loc: "VB35", desc: "Nem egyezik egyik szekrényben sem. (Biztosítékok és megszakítók áramértéke)."},
+        {id: 807, loc: "VB35", desc: "8A van állítva."},
+        {id: 808, loc: "VB35", desc: "Nem elérhetőek az offset értékek."},
+        {id: 809, loc: "VB36", desc: "Nem megfelelő. 402-esben nincs biztosíték. Dokumentum alapján 3.15A-snak kell benne lennie."},
+        {id: 810, loc: "VB36", desc: "Nem megfelelő. 402-esben nincs biztosíték. Dokumentum alapján 3.15A-snak kell benne lennie. (Duplikált tétel a listában)."},
+        {id: 811, loc: "VB36", desc: "8A van állítva."},
+        {id: 812, loc: "VB36", desc: "8A van állítva."},
+        {id: 813, loc: "VB37", desc: "H011-ben vannak eltérések a feltüntetett és a valódi áramértékek között.\nA motorvédő kapcsolóknak nincs feltüntetett értéke amivel össze tudnánk hasonlítani.\nH112 caparoc-oknál nincs feltüntetve az áramérték, nem tudtuk ellenőrizni.\n001KL101 mind 8 amperra van állítva, de rajz szerint másra kellene állítva lennie.\nH001-ben a 618, 619, 620 biztosítók nincsenek a kapcsolási rajzban feltüntetve."},
+        {id: 814, loc: "VB37", desc: "H211 caparoc áramértékek nincsenek feltüntetve a kapcsolási rajzban, nem tudtuk ellenőrizni (E-planban nincs érték)."},
+        {id: 815, loc: "QS35", desc: "Hajtás szekrényeken nincs túlfolyó tartály."},
+        {id: 816, loc: "QS35", desc: "501-510 szigetelő szalaggal van tervjelezve.\n000ee_001 h001 nincs feljelölve."},
+        {id: 817, loc: "QS35", desc: "QB1 értéke nem szerepel a darablistában. Eplanban 400A van feltüntetve, 160A van bennük."},
+        {id: 818, loc: "QS35", desc: "Több eltérés. (Nagyon sok beállított áramérték nem egyezik a kapcsolási rajzzal)."},
+        {id: 819, loc: "UG35", desc: "Nem egyeznek (Paraméterkészletek / projektadatok)."},
+        {id: 820, loc: "UG35", desc: "Több eltérés. (Több biztosíték nem egyezik a kapcsolási rajzzal)."},
+        {id: 821, loc: "UG35", desc: "Csak 5A van használva, konfig eltér az előírttól."},
+        {id: 822, loc: "UG35", desc: "Nincs synchro (adatmentés)."},
+        {id: 823, loc: "UG35", desc: "Nem átlátható. Topológia NIO, nem a PRL szerint készült."},
+        {id: 824, loc: "UG35", desc: "Nem megfelelő értékek (Locc Box)."},
+        {id: 825, loc: "UG35", desc: "Nem érhető el sem a syncro se a gateway konfiguráció."},
+        {id: 826, loc: "UB32", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni! (Papírmentes doku, Mobsy, Profienergy, stb)."},
+        {id: 827, loc: "UB33", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
+        {id: 828, loc: "UB34", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
+        {id: 829, loc: "UB35", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
+        {id: 830, loc: "UG35", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
+        {id: 831, loc: "UG36", desc: "GBO Betriebsfunktionen Eredmények: NG vagy Üres cellákat még el kell végezni!"},
+        {id: 832, loc: "QS35", desc: "Kérlek a túl sok zavart és figyelmeztetést (lásd Top Störungen) az SPS programban ellenőrizni és javítani!"},
+        {id: 1046, loc: "HC35", desc: "Kein Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1047, loc: "HC35", desc: "Eplan kézírással van kiegészítve! NIO.\nNincs Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1048, loc: "HC35", desc: "Nincs Label az Externe Spannung-hoz (Mitarbeiter Ventilátor).\nNincs Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1049, loc: "HC36", desc: "Nincs Label az Externe Spannung-hoz (Mitarbeiter Ventilátor).\nNincs Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1050, loc: "HC37", desc: "Nem minden irányba mozgatható. (Kamera, X-Y-Z)."},
+        {id: 1051, loc: "HC37", desc: "Nem minden irányba mozgatható. (Kamera)."},
+        {id: 1052, loc: "HC38", desc: "60dgc109 előtti védőlemez a spanneren hiányzik."},
+        {id: 1053, loc: "HC39", desc: "Nem minden irányba mozgatható! NIO."},
+        {id: 1054, loc: "VB35", desc: "Igen, de papírra van nyomtatva. (Veszélyes feszültséget jelző figyelmeztetőtábla)."},
+        {id: 1055, loc: "VB35", desc: "Az optikai kábel nem jól van elvezetve."},
+        {id: 1056, loc: "HC38", desc: "Nem minden irányba mozgatható! NIO."},
+        {id: 1057, loc: "HC38", desc: "Nincs Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1058, loc: "VB35", desc: "Nincs, hiányos. (Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt)."},
+        {id: 1059, loc: "VB35", desc: "EPLAN hiányzik!!! Nincs benne. (Tartalmazza-e a letelepített NC-locatorokat?)"},
+        {id: 1060, loc: "VB36", desc: "80RB100 Schlauchpacket NIO. Nem megfelelő Schlauchpacket van használva a roboton."},
+        {id: 1061, loc: "VB36", desc: "Kabel NIO, lásd kép!!!\n080WZA209 mellett ki vagy beépítés alatt áll a 080DGC209. Nem megfelelő kábelelrendezés."},
+        {id: 1062, loc: "VB36", desc: "002BR_020: A KP32 plusz nyomógomb világít."},
+        {id: 1063, loc: "VB36", desc: "50GST009-nél nem megfelelő, valamint látszódik a csatlakozón az emiatti elhasználódás is."},
+        {id: 1064, loc: "VB37", desc: "Fent van, de papír. (Veszélyes feszültséget jelző tábla)."},
+        {id: 1065, loc: "VB37", desc: "EPLAN hiányzik!!! Nincs benne."},
+        {id: 1066, loc: "VB37", desc: "Az optikai kábel nem jól van elvezetve."},
+        {id: 1067, loc: "VB37", desc: "(Üres/Duplikált bejegyzés - GBO Template)."},
+        {id: 1068, loc: "VB37", desc: "Kein Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1069, loc: "VB37", desc: "Nincs, hiányos. (Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt)."},
+        {id: 1070, loc: "VB37", desc: "Nincs benne (EPLAN)."},
+        {id: 1071, loc: "UG35", desc: "Nincsen. (Vigyázat! A főkapcsoló lekapcsolása után is feszültség alatt címke)."},
+        {id: 1072, loc: "UG35", desc: "Nincsen. (A fő betáp szekrény címkéje rögzítve van? +H011)."},
+        {id: 1073, loc: "UG35", desc: "Z tengely fix, 150dgc egy spanneren van."},
+        {id: 1074, loc: "UG35", desc: "150dgc spanneren van. (Rezgésekre érzéketlen?)"},
+        {id: 1075, loc: "QS35", desc: "Nem minden irányba mozgatható! NIO."},
+        {id: 1076, loc: "QS35", desc: "Nincs Keba Panel! Stecker Deckel hiányzik!"},
+        {id: 1077, loc: "UG35", desc: "150dgc spanneren van NIO. (Kamera külső erőbehatások ellen védett?)"},
+        {id: 1078, loc: "UG35", desc: "150dgc nem megfelelő. (A Band3 25-ös fejezetben lévő leírás alapján lett kiépítve?)"}
     ];
 
     let lopData = JSON.parse(JSON.stringify(initialData));
     
-    // UI elemek
+    // UI ELEMEK
     const listContainer = document.getElementById('listContainer');
     const searchInput = document.getElementById('searchInput');
     const totalEl = document.getElementById('total-count');
     const doneEl = document.getElementById('done-count');
     const pendingEl = document.getElementById('pending-count');
 
-    // Inicializálás
+    // INICIALIZÁLÁS
     function init() {
-        // Megpróbáljuk betölteni a mentett állapotot
-        loadProgress();
+        loadProgress(); // Mentés betöltése LocalStorage-ból
         renderList(lopData);
         updateStats();
     }
 
     // --- MENTÉS és BETÖLTÉS LOGIKA (LocalStorage) ---
 
-    // Betöltés böngészőből
     function loadProgress() {
         const saved = localStorage.getItem('lopProgress');
         if (saved) {
             try {
                 const savedState = JSON.parse(saved);
-                // Összefésülés: Csak a 'done' státuszt vesszük át, ha egyezik az ID
                 lopData.forEach(item => {
-                    if (savedState[item.id]) {
-                        item.done = true;
-                    }
+                    if (savedState[item.id]) { item.done = true; }
                 });
-            } catch (e) {
-                console.error("Hiba a betöltéskor:", e);
-            }
+            } catch (e) { console.error("Hiba a betöltéskor:", e); }
         }
     }
 
-    // Mentés böngészőbe
     function saveProgress() {
         const stateToSave = {};
-        lopData.forEach(item => {
-            if (item.done) {
-                stateToSave[item.id] = true;
-            }
-        });
+        lopData.forEach(item => { if (item.done) stateToSave[item.id] = true; });
         localStorage.setItem('lopProgress', JSON.stringify(stateToSave));
     }
 
-    // Törlés
     function resetAll() {
         if(confirm("Biztosan törölni akarod az összes pipát? Ezt nem lehet visszavonni!")) {
             lopData.forEach(item => item.done = false);
@@ -457,55 +428,39 @@
         }
     }
 
-    // --- FÁJL MENTÉS/BETÖLTÉS LOGIKA ---
+    // --- FÁJL MŰVELETEK ---
 
-    // Letöltés JSON fájlként
     function downloadState() {
         const stateToSave = {};
-        lopData.forEach(item => {
-            if (item.done) {
-                stateToSave[item.id] = true;
-            }
-        });
-        
+        lopData.forEach(item => { if (item.done) stateToSave[item.id] = true; });
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(stateToSave));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", "lop_allapot_" + new Date().toISOString().slice(0,10) + ".json");
-        document.body.appendChild(downloadAnchorNode); // required for firefox
+        document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
         showToast("Fájl letöltve!");
     }
 
-    // Betöltés fájlból
     function loadFromFile(input) {
         const file = input.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = function(e) {
             try {
                 const savedState = JSON.parse(e.target.result);
-                // Reseteljük először, vagy csak hozzáadjuk? Inkább összefésüljük (hozzáadjuk).
                 let count = 0;
                 lopData.forEach(item => {
-                    if (savedState[item.id]) {
-                        item.done = true;
-                        count++;
-                    }
+                    if (savedState[item.id]) { item.done = true; count++; }
                 });
-                
-                saveProgress(); // Elmentjük a LocalStorage-ba is
+                saveProgress();
                 renderList(lopData);
                 updateStats();
-                showToast(count + " elem sikeresen betöltve!");
-            } catch (err) {
-                alert("Hiba a fájl olvasásakor! Biztosan megfelelő JSON?");
-            }
+                showToast(count + " elem betöltve!");
+            } catch (err) { alert("Hiba a fájl olvasásakor!"); }
         };
         reader.readAsText(file);
-        // Reset input
         input.value = ''; 
     }
 
@@ -516,7 +471,7 @@
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
-    // --- UI RENDERELÉS ---
+    // --- RENDERELÉS ---
 
     function renderList(data) {
         listContainer.innerHTML = '';
@@ -527,6 +482,9 @@
             
             card.onclick = (e) => toggleStatus(item.id, card);
 
+            // Sortörések kezelése a HTML-ben
+            const formattedDesc = item.desc.replace(/\n/g, '<br>');
+
             card.innerHTML = `
                 <div class="card-id">
                     #${item.id}
@@ -536,7 +494,7 @@
                         <span class="location-badge">${item.loc}</span>
                     </div>
                     <div class="problem-text">
-                        ${item.desc}
+                        ${formattedDesc}
                     </div>
                 </div>
                 <div class="checkbox-area">
@@ -551,7 +509,6 @@
         const itemIndex = lopData.findIndex(x => x.id === id);
         if (itemIndex > -1) {
             lopData[itemIndex].done = !lopData[itemIndex].done;
-            
             if (lopData[itemIndex].done) {
                 cardElement.classList.remove('pending');
                 cardElement.classList.add('done');
@@ -559,16 +516,14 @@
                 cardElement.classList.remove('done');
                 cardElement.classList.add('pending');
             }
-            
             updateStats();
-            saveProgress(); // Mentés minden kattintáskor
+            saveProgress();
         }
     }
 
     function updateStats() {
         const total = lopData.length;
         const done = lopData.filter(x => x.done).length;
-        
         totalEl.textContent = total;
         doneEl.textContent = done;
         pendingEl.textContent = total - done;
@@ -584,11 +539,8 @@
         renderList(filteredData);
     });
 
-    // Start
     init();
-
 </script>
 
 </body>
-
 </html>
